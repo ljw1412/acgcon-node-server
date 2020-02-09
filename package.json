@@ -1,0 +1,41 @@
+{
+  "name": "acgcon-node-server",
+  "version": "0.0.1",
+  "description": "acgcon服务端(基于NodeJs)",
+  "private": true,
+  "scripts": {
+    "start": "node bin/www",
+    "dev": "./node_modules/.bin/nodemon bin/www",
+    "prd": "pm2 start bin/www",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ljw1412/acgcon-node-server.git"
+  },
+  "author": "ljw1412",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ljw1412/acgcon-node-server/issues"
+  },
+  "homepage": "https://github.com/ljw1412/acgcon-node-server#readme",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "dotenv": "^8.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "kcors": "^2.2.2",
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-convert": "^1.2.0",
+    "koa-helmet": "^5.2.0",
+    "koa-json": "^2.0.2",
+    "koa-logger": "^3.2.1",
+    "koa-onerror": "^4.1.0",
+    "koa-router": "^8.0.7",
+    "koa-static": "^5.0.0",
+    "mongoose": "^5.8.11"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
