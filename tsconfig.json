@@ -18,13 +18,10 @@
     "strictPropertyInitialization": false,
     "noFallthroughCasesInSwitch": true,
     "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
     "skipDefaultLibCheck": true,
     "inlineSourceMap": true,
     "importHelpers": true
   },
-  "exclude": [
-    "app/public",
-    "app/views",
-    "node_modules*"
-  ]
+  "exclude": ["app/public", "app/views", "node_modules*"]
 }
