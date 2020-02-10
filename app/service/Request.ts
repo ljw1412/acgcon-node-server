@@ -1,14 +1,13 @@
 import { Service } from 'egg';
 import * as rp from 'request-promise';
+import { CoreOptions } from 'request';
 
 export default class Request extends Service {
-  public async get(url: string, options?: rp.Options) {
-    options = Object.assign({ method: 'GET' }, options);
-    return rp(url, options);
+  public async get(uri: string, options?: CoreOptions) {
+    return rp(Object.assign({ method: 'GET', uri }, options));
   }
 
-  public async post(url: string, options?: rp.Options) {
-    options = Object.assign({ method: 'POST' }, options);
-    return rp(url, options);
+  public async post(uri: string, options?: CoreOptions) {
+    return rp(Object.assign({ method: 'POST', uri }, options));
   }
 }

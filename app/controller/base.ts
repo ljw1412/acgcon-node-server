@@ -9,7 +9,8 @@ export default class BaseController extends Controller {
     const { ctx } = this;
     try {
       const response = await ctx.service.request.get(
-        'https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=8&mkt=zh-CN'
+        'https://cn.bing.com/HPImageArchive.aspx',
+        { qs: { format: 'js', idx: 0, n: 8, mkt: 'zh-CN' } }
       );
       ctx.body = response;
     } catch (error) {

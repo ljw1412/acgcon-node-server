@@ -1,7 +1,9 @@
 {
   "extends": "eslint-config-egg/typescript",
   "rules": {
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "@typescript-eslint/ban-ts-ignore": "off",
+    "array-bracket-spacing": "off"
   },
   "parserOptions": {
     "project": "./tsconfig.json"
