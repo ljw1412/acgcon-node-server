@@ -12,9 +12,13 @@ export default class BaseController extends Controller {
         'https://cn.bing.com/HPImageArchive.aspx',
         { qs: { format: 'js', idx: 0, n: 8, mkt: 'zh-CN' } }
       );
-      ctx.body = response;
+      const images = JSON.parse(response).images;
+      images.forEach(item => {
+        item.url = `//cn.bing.com${item.url}`;
+      });
+      ctx.body = images;
     } catch (error) {
-      ctx.throw(error);
+      ctx.throw(500);
     }
   }
 }
