@@ -16,6 +16,7 @@ import 'egg-jsonp';
 import 'egg-view';
 import 'egg-cors';
 import 'egg-router-plus';
+import 'egg-mongoose';
 import { EggPluginItem } from 'egg';
 declare module 'egg' {
   interface EggPlugin {
@@ -33,5 +34,6 @@ declare module 'egg' {
     view?: EggPluginItem;
     cors?: EggPluginItem;
     routerPlus?: EggPluginItem;
+    mongoose?: EggPluginItem;
   }
 }

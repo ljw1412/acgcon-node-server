@@ -21,4 +21,13 @@ export default class BaseController extends Controller {
       ctx.throw(500);
     }
   }
+
+  public async getBaseConfig() {
+    const { ctx, app } = this;
+    ctx.body = {
+      banner: {
+        bg: `${app.config.cdnDomain}/acgcon/bg-base.jpg`
+      }
+    };
+  }
 }
