@@ -28,4 +28,15 @@ export default class SubRouter {
   addRoute(method: string, path: string, fn: Function) {
     this.router[method.toLowerCase()](path, fn);
   }
+
+  /**
+   * RESTful 风格的 URL 定义
+   * @description https://eggjs.org/zh-cn/basics/router.html#restful-风格的-url-定义
+   * @param name 路由名称
+   * @param prefix 路径前缀
+   * @param middleware 中间件
+   */
+  resources(name: string, prefix: string, ...middleware: any[]) {
+    this.router.resources(name, prefix, ...middleware);
+  }
 }
