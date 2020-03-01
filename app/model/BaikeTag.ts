@@ -5,9 +5,12 @@ module.exports = (app: Application) => {
   const { Schema } = mongoose;
   const BaikeTagSchema = new Schema({
     name: String,
+    value: String,
+    icon: String,
     acgType: String,
     type: String,
-    group: String
+    group: String,
+    order: Number
   });
   return mongoose.model('BaikeTag', BaikeTagSchema, 'baike_tags');
 };
