@@ -34,4 +34,15 @@ export default class BaikeTagController extends Controller {
     const { ctx } = this;
     ctx.body = await ctx.model.BaikeTag.create(ctx.query);
   }
+
+  public async create() {
+    const { ctx, service } = this;
+    ctx.body = await service.tag.createGroup(ctx.request.body);
+  }
+
+  public async createTags() {
+    const { ctx, service } = this;
+    const { groupid, tags } = ctx.request.body;
+    ctx.body = await service.tag.createTagsByGroupid(groupid, tags);
+  }
 }

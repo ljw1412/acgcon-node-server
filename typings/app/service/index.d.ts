@@ -3,11 +3,13 @@
 
 import 'egg';
 import ExportRequest from '../../../app/service/Request';
+import ExportTag from '../../../app/service/Tag';
 import ExportUser from '../../../app/service/User';
 
 declare module 'egg' {
   interface IService {
     request: ExportRequest;
+    tag: ExportTag;
     user: ExportUser;
   }
 }
