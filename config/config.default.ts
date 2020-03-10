@@ -2,12 +2,14 @@ import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 
 export default (appInfo: EggAppInfo) => {
   const config = {
+    jwt: { secret: 'acgcon' },
     mongoose: {
       client: {
         url: 'mongodb://127.0.0.1/acgcon',
         options: {
           useNewUrlParser: true,
-          useFindAndModify: false
+          useFindAndModify: false,
+          useUnifiedTopology: true
         }
       }
     }
