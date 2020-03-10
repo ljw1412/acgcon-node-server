@@ -3,9 +3,11 @@
 
 import 'egg';
 import ExportBaikeTag from '../../../app/model/BaikeTag';
+import ExportUser from '../../../app/model/User';
 
 declare module 'egg' {
   interface IModel {
     BaikeTag: ReturnType<typeof ExportBaikeTag>;
+    User: ReturnType<typeof ExportUser>;
   }
 }
