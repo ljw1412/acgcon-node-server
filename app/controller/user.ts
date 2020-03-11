@@ -1,38 +1,38 @@
 import { Controller } from 'egg';
 
-export default class UserController extends Controller {
-  USER_CREATE_TRANSFER = {
-    username: {
-      type: 'string',
-      required: true,
-      allowEmpty: false,
-      format: /^[\w-]{6,12}$/
-    },
-    nickname: {
-      type: 'string',
-      required: true,
-      allowEmpty: false,
-      min: 2,
-      format: /^[\u2E80-\u9FFF\w,\.。]{2,10}$/
-    },
-    email: {
-      type: 'email',
-      required: true,
-      allowEmpty: false
-    },
-    password: {
-      type: 'password',
-      required: true,
-      allowEmpty: false,
-      min: 6,
-      max: 16
-    }
-  };
+const USER_CREATE_TRANSFER = {
+  username: {
+    type: 'string',
+    required: true,
+    allowEmpty: false,
+    format: /^[\w-]{6,12}$/
+  },
+  nickname: {
+    type: 'string',
+    required: true,
+    allowEmpty: false,
+    min: 2,
+    format: /^[\u2E80-\u9FFF\w,\.。]{2,10}$/
+  },
+  email: {
+    type: 'email',
+    required: true,
+    allowEmpty: false
+  },
+  password: {
+    type: 'password',
+    required: true,
+    allowEmpty: false,
+    min: 6,
+    max: 16
+  }
+};
 
+export default class UserController extends Controller {
   // 创建用户
   public async create() {
     const { ctx, service } = this;
-    ctx.validate(this.USER_CREATE_TRANSFER);
+    ctx.validate(USER_CREATE_TRANSFER);
     const payload = ctx.request.body || {};
     const res = await service.user.create(payload);
     ctx.body = res;
@@ -68,5 +68,12 @@ export default class UserController extends Controller {
     const payload = ctx.query;
     const res = await service.user.index(payload);
     ctx.body = res;
+  }
+
+  // 用户登录
+  public async login() {
+    const { ctx, service } = this;
+    const payload = ctx.request.body || {};
+    ctx.body = await service.user.login(payload);
   }
 }

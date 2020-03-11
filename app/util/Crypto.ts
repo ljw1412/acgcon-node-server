@@ -20,8 +20,8 @@ export default class Crypto {
   /**
    *  AES对称加密
    */
-  static aesEncrypt(data, key = this.genRandomString(16)) {
-    const cipher = crypto.createCipher('aes192', key);
+  static aesEncrypt(data, key = this.genRandomString(32)) {
+    const cipher = crypto.createCipheriv('aes-256-ecb', key, null);
     var crypted = cipher.update(data, 'utf8', 'hex');
     crypted += cipher.final('hex');
     return { result: crypted, salt: key };
@@ -30,7 +30,7 @@ export default class Crypto {
    *  AES对称解密
    */
   static aesDecrypt(encrypted, key) {
-    const decipher = crypto.createDecipher('aes192', key);
+    const decipher = crypto.createDecipheriv('aes-256-ecb', key, null);
     var decrypted = decipher.update(encrypted, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
     return decrypted;
