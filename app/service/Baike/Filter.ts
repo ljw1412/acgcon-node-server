@@ -16,4 +16,9 @@ export default class BaikeFilterService extends Service {
     filter.tags.push(payload);
     return await filter.save();
   }
+
+  public async listFilter(payload) {
+    const { ctx } = this;
+    return ctx.model.BaikeFilter.find(payload);
+  }
 }
