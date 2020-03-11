@@ -6,5 +6,6 @@ module.exports = (app: Application) => {
   const mapping = {};
   const subRouter = new SubRouter(app, '/baike');
   subRouter.addMapping(mapping);
+  subRouter.resources('filter', '/filter', controller.baike.filter);
   subRouter.resources('tags', '/tags', controller.baike.tag);
 };

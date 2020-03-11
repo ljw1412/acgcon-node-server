@@ -4,6 +4,7 @@
 import 'egg';
 import ExportBase from '../../../app/controller/base';
 import ExportUser from '../../../app/controller/user';
+import ExportBaikeFilter from '../../../app/controller/Baike/Filter';
 import ExportBaikeTag from '../../../app/controller/Baike/Tag';
 import ExportBaikeIndex from '../../../app/controller/Baike/index';
 
@@ -12,6 +13,7 @@ declare module 'egg' {
     base: ExportBase;
     user: ExportUser;
     baike: {
+      filter: ExportBaikeFilter;
       tag: ExportBaikeTag;
       index: ExportBaikeIndex;
     }
