@@ -1,4 +1,5 @@
 import { Service } from 'egg';
+import { only } from '../util/Object';
 
 export default class UserService extends Service {
   public async create(payload: Record<string, any>) {
@@ -30,6 +31,15 @@ export default class UserService extends Service {
 
   public async index(payload: Record<string, any>) {
     return payload;
+  }
+
+  // 检查用户是否存在
+  public async exists(payload: Record<string, any>) {
+    const user = await this.findUserByLoginName(payload.loginName);
+    if (!user) {
+      this.ctx.throw(500, '用户不存在');
+    }
+    return only(user.toObject(), '_id username avatar email');
   }
 
   // 根据登录名称查找用户

@@ -70,6 +70,14 @@ export default class UserController extends Controller {
     ctx.body = res;
   }
 
+  // 查询用户名或邮箱是否存在
+  public async exists() {
+    const { ctx, service } = this;
+    const payload = ctx.query;
+    const res = await service.user.exists(payload);
+    ctx.body = res;
+  }
+
   // 用户登录
   public async login() {
     const { ctx, service } = this;
