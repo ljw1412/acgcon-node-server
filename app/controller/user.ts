@@ -82,6 +82,11 @@ export default class UserController extends Controller {
   public async login() {
     const { ctx, service } = this;
     const payload = ctx.request.body || {};
-    ctx.body = await service.user.login(payload);
+    const user = await service.user.login(payload);
+    if (!user) return;
+    ctx.session = { user };
+    // 调用 rotateCsrfSecret 刷新用户的 CSRF token
+    ctx.rotateCsrfSecret();
+    ctx.body = user;
   }
 }

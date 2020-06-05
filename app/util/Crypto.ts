@@ -12,9 +12,9 @@ export default class Crypto {
    *  使用sha512算法加盐进行hash
    */
   static hash512(str, salt = this.genRandomString(16)) {
-    var hash = crypto.createHmac('sha512', salt);
+    const hash = crypto.createHmac('sha512', salt);
     hash.update(str);
-    var value = hash.digest('hex');
+    const value = hash.digest('hex');
     return { result: value, salt };
   }
   /**
@@ -22,7 +22,7 @@ export default class Crypto {
    */
   static aesEncrypt(data, key = this.genRandomString(32)) {
     const cipher = crypto.createCipheriv('aes-256-ecb', key, null);
-    var crypted = cipher.update(data, 'utf8', 'hex');
+    let crypted = cipher.update(data, 'utf8', 'hex');
     crypted += cipher.final('hex');
     return { result: crypted, salt: key };
   }
@@ -31,7 +31,7 @@ export default class Crypto {
    */
   static aesDecrypt(encrypted, key) {
     const decipher = crypto.createDecipheriv('aes-256-ecb', key, null);
-    var decrypted = decipher.update(encrypted, 'hex', 'utf8');
+    let decrypted = decipher.update(encrypted, 'hex', 'utf8');
     decrypted += decipher.final('utf8');
     return decrypted;
   }

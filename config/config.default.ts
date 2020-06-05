@@ -24,6 +24,12 @@ export default (appInfo: EggAppInfo) => {
 
   config.cdnDomain = '';
 
+  config.onerror = {
+    json(err, ctx) {
+      ctx.body = { message: err.message, status: ctx.status };
+    }
+  };
+
   // add your special config in here
   const bizConfig = {
     sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`
