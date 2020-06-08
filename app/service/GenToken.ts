@@ -1,12 +1,25 @@
 import { Service } from 'egg';
+import { SignOptions } from 'jsonwebtoken';
+
 export default class GenTokenService extends Service {
-  public async sign(data, exp) {
-    const { ctx } = this;
-    return ctx.app.jwt.sign({ data, exp }, ctx.app.config.jwt.secret);
+  get jwt() {
+    return this.ctx.app.jwt;
+  }
+
+  get secret() {
+    return this.ctx.app.config.jwt.secret;
+  }
+
+  public async sign(data, option: number | SignOptions) {
+    const payload: Record<string, any> = { data };
+    if (typeof option === 'number') {
+      payload.exp = option;
+      option = {};
+    }
+    return this.jwt.sign(payload, this.secret, option);
   }
 
   public async verify(token) {
-    const { ctx } = this;
-    return ctx.app.jwt.verify(token, ctx.app.config.jwt.secret);
+    return this.jwt.verify(token, this.secret);
   }
 }
