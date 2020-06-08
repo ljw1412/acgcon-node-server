@@ -70,6 +70,16 @@ export default class UserController extends Controller {
     ctx.body = res;
   }
 
+  /**
+   * 当前用户
+   */
+  public async whoami() {
+    const { ctx, service } = this;
+    const id = ctx.session.userid;
+    const res = await service.user.show(id);
+    ctx.body = res || {};
+  }
+
   // 查询用户名或邮箱是否存在
   public async exists() {
     const { ctx, service } = this;
@@ -89,9 +99,16 @@ export default class UserController extends Controller {
     if (!user) return ctx.throw(401, '用户不存在');
     user = await service.user.checkPassword(user, password);
     if (!user) return ctx.throw(401, '密码错误');
-    ctx.session = { id: user._id };
+    ctx.session.userid = user._id;
     // 调用 rotateCsrfSecret 刷新用户的 CSRF token
     ctx.rotateCsrfSecret();
     ctx.body = user;
+  }
+
+  // 用户登出
+  public async logout() {
+    const { ctx } = this;
+    ctx.session = null;
+    ctx.body = { success: true };
   }
 }

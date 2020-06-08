@@ -3,7 +3,10 @@ import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
 export default (appInfo: EggAppInfo) => {
   const config = {
     jwt: { secret: 'acgcon' },
-    session: { key: 'ACGCON_SESSION_TOKEN' },
+    session: {
+      key: 'ACGCON_SESSION_TOKEN',
+      maxAge: 7 * 24 * 3600 * 1000
+    },
     mongoose: {
       client: {
         url: 'mongodb://127.0.0.1/acgcon',

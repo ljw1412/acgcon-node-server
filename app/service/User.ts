@@ -25,6 +25,7 @@ export default class UserService extends Service {
   }
 
   public async show(_id: string) {
+    if (!_id) return null;
     const { ctx } = this;
     return await ctx.model.User.findOne({ _id }, { password: 0, salt: 0 });
   }
@@ -71,7 +72,7 @@ export default class UserService extends Service {
    */
   public async checkPassword(user, password) {
     if (!user) return null;
-    const { ctx, service } = this;
+    const { ctx } = this;
     // 用户输入的密码与数据库对应用户的盐进行加密
     const { result: aesPassword } = ctx.helper.crypto.aesEncrypt(
       password,
@@ -81,10 +82,6 @@ export default class UserService extends Service {
     const userObj = user.toObject();
     delete userObj.password;
     delete userObj.salt;
-
-    // 设置token
-    userObj.token = await service.genToken.sign(userObj, { expiresIn: '7d' });
-
     return userObj;
   }
 }

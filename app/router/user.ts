@@ -8,7 +8,9 @@ module.exports = (app: Application) => {
 
   const mapping = {
     'GET /exists': controller.user.exists,
-    'POST /login': controller.user.login
+    'GET /whoami': controller.user.whoami,
+    'POST /login': controller.user.login,
+    'POST /logout': controller.user.logout
   };
   const subRouter = new SubRouter(app, '/user');
   subRouter.addMapping(mapping);
