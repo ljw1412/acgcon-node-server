@@ -19,6 +19,7 @@ export default class UserService extends Service {
     return true;
   }
 
+  // TODO
   public async update(_id: string, payload: Record<string, any>) {
     return { _id, payload };
   }
@@ -28,8 +29,18 @@ export default class UserService extends Service {
     return await ctx.model.User.findOne({ _id }, { password: 0, salt: 0 });
   }
 
+  // TODO
   public async index(payload: Record<string, any>) {
     return payload;
+  }
+
+  /**
+   * 检查昵称是否存在
+   * @param nickname 昵称
+   */
+  public async nicknameExists(nickname: string) {
+    const { ctx } = this;
+    return !!(await ctx.model.User.count({ nickname }));
   }
 
   /**
@@ -49,45 +60,31 @@ export default class UserService extends Service {
    */
   public async exists({ loginName }) {
     const user = await this.findUserByLoginName(loginName);
-    if (!user) {
-      this.ctx.throw(401, '用户不存在');
-    }
+    if (!user) return null;
     return { name: loginName, avatar: user.avatar };
   }
 
   /**
-   * 登录
-   * @param param 入参
-   * @param param.loginName 登录名
-   * @param param.password 密码
+   * 检查用户密码是否正确
+   * @param user 用户
+   * @param password 输入的密码
    */
-  public async login({ loginName, password }) {
+  public async checkPassword(user, password) {
+    if (!user) return null;
     const { ctx, service } = this;
-    const user = await this.findUserByLoginName(loginName);
-    if (!user) {
-      ctx.throw(401, '用户不存在');
-      return;
-    }
     // 用户输入的密码与数据库对应用户的盐进行加密
     const { result: aesPassword } = ctx.helper.crypto.aesEncrypt(
       password,
       user.salt
     );
-
-    if (user.password !== aesPassword) {
-      ctx.throw(401, '密码错误');
-      return;
-    }
+    if (user.password !== aesPassword) return;
     const userObj = user.toObject();
     delete userObj.password;
     delete userObj.salt;
 
-    Object.assign(userObj, {
-      token: await service.genToken.sign(
-        userObj,
-        +new Date() / 1000 + 60 * 60 * 24 * 7
-      )
-    });
+    // 设置token
+    userObj.token = await service.genToken.sign(userObj, { expiresIn: '7d' });
+
     return userObj;
   }
 }

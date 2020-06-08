@@ -9,7 +9,7 @@ module.exports = (app: Application) => {
     email: String,
     password: String,
     salt: String,
-    avatar: String,
+    avatar: { type: String, default: '' },
     role: { type: String, default: 'user' },
     regtime: { type: Date, default: Date.now }
   });
