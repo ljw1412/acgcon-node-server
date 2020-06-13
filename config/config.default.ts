@@ -7,6 +7,7 @@ export default (appInfo: EggAppInfo) => {
       key: 'ACGCON_SESSION_TOKEN',
       maxAge: 7 * 24 * 3600 * 1000
     },
+    logger: { outputJSON: true },
     mongoose: {
       client: {
         url: 'mongodb://127.0.0.1/acgcon',

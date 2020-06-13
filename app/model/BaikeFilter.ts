@@ -14,6 +14,8 @@ module.exports = (app: Application) => {
     type: String,
     // 排序
     order: Number,
+    // 是否允许多选
+    multiple: Boolean,
     // 标签列表
     tags: [{ name: String, order: Number }]
   });
