@@ -25,7 +25,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1581310668696_3264';
 
   // add your egg config in here
-  config.middleware = [];
+  config.middleware = ['currentUser'];
 
   config.cdnDomain = '';
 
@@ -37,7 +37,7 @@ export default (appInfo: EggAppInfo) => {
 
   // add your special config in here
   const bizConfig = {
-    sourceUrl: `https://github.com/eggjs/examples/tree/master/${appInfo.name}`
+    currentUser: {}
   };
 
   // the return config will combines to EggAppConfig

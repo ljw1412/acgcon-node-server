@@ -20,17 +20,23 @@ export default class FilterController extends Controller {
     const { ctx, service } = this;
     const createRule = {
       name: { type: 'string', required: true },
-      icon: { type: 'string', required: false },
+      icon: { type: 'string', required: false, default: '' },
       acgType: {
         type: 'enum',
         values: ['animation', 'comic', 'game'],
         required: true
       },
       type: { type: 'string', required: true },
-      order: { type: 'number' }
+      order: { type: 'number', required: false, default: 0 }
     };
     ctx.validate(createRule);
     const payload = ctx.request.body || {};
     ctx.body = await service.baike.filter.createFilter(payload);
+  }
+
+  public async destroy() {
+    const { ctx, service } = this;
+    ctx.validate({ id: { type: 'string', required: true } }, ctx.params);
+    ctx.body = await service.baike.filter.deleteFilterById(ctx.params.id);
   }
 }

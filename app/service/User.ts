@@ -27,7 +27,7 @@ export default class UserService extends Service {
   public async show(_id: string) {
     if (!_id) return null;
     const { ctx } = this;
-    return await ctx.model.User.findOne({ _id }, { password: 0, salt: 0 });
+    return await ctx.model.User.findById(_id, { password: 0, salt: 0 });
   }
 
   // TODO

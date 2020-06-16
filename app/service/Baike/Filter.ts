@@ -3,7 +3,24 @@ import { Service } from 'egg';
 export default class BaikeFilterService extends Service {
   public async createFilter(payload: Record<string, any>) {
     const { ctx } = this;
+    // 如果未设置 order 默认同类型的order最大值向后一位
+    if (!payload.order) {
+      const { acgType, type } = payload;
+      const [result] = await ctx.model.BaikeFilter.aggregate()
+        .match({ acgType, type })
+        .group({ _id: null, maxOrder: { $max: '$order' } });
+      const nextOrder = result ? result.maxOrder + 1 : 1;
+      payload.order = nextOrder;
+    }
     return ctx.model.BaikeFilter.create(payload);
+  }
+
+  /**
+   * deleteFilterById
+   */
+  public deleteFilterById(id: string) {
+    const { ctx } = this;
+    return ctx.model.BaikeFilter.findByIdAndDelete(id);
   }
 
   public async createTag(groupId, payload: Record<string, any>) {
@@ -19,6 +36,6 @@ export default class BaikeFilterService extends Service {
 
   public async listFilter(payload) {
     const { ctx } = this;
-    return ctx.model.BaikeFilter.find(payload);
+    return ctx.model.BaikeFilter.find(payload).sort({ order: 1 });
   }
 }
