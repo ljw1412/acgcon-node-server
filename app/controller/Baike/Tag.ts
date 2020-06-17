@@ -6,7 +6,7 @@ export default class BaikeTagController extends Controller {
     const createRule = {
       groupId: { type: 'string' },
       name: { type: 'string' },
-      order: { type: 'number' }
+      order: { type: 'number', required: false, default: 0 }
     };
     ctx.validate(createRule);
     const payload = ctx.request.body || {};

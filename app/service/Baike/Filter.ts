@@ -29,6 +29,11 @@ export default class BaikeFilterService extends Service {
     const filter = await BaikeFilter.findById(groupId);
     if (!filter) {
       ctx.throw(404, 'groupId 无效');
+      return;
+    }
+    if (!payload.order) {
+      const nextOrder = Math.max(0, ...filter.tags.map(tag => tag.order)) + 1;
+      payload.order = nextOrder;
     }
     filter.tags.push(payload);
     return await filter.save();
