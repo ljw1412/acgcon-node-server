@@ -20,6 +20,10 @@ const plugin: EggPlugin = {
   validate: {
     enable: true,
     package: 'egg-validate'
+  },
+  redis: {
+    enable: true,
+    package: 'egg-redis'
   }
 };
 

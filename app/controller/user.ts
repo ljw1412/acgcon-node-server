@@ -29,6 +29,14 @@ const USER_CREATE_TRANSFER = {
 };
 
 export default class UserController extends Controller {
+  get userid() {
+    return this.ctx.session.userid;
+  }
+
+  set userid(val: string) {
+    this.ctx.session.userid = val;
+  }
+
   // 创建用户
   public async create() {
     const { ctx, service } = this;
@@ -74,10 +82,21 @@ export default class UserController extends Controller {
    * 当前用户
    */
   public async whoami() {
-    const { ctx, service } = this;
-    const id = ctx.session.userid;
-    const res = await service.user.show(id);
-    ctx.body = res || {};
+    const { ctx, app, service, userid } = this;
+    if (!userid) {
+      ctx.body = {};
+      return;
+    }
+    if (ctx.user) {
+      ctx.body = ctx.user;
+      return;
+    }
+    // 从数据库里获取用户信息
+    const userInDB = await service.user.show(userid);
+    if (userInDB) {
+      app.redis.set(`user_${userInDB._id}`, JSON.stringify(userInDB));
+    }
+    ctx.body = userInDB || {};
   }
 
   // 查询用户名或邮箱是否存在
@@ -93,15 +112,16 @@ export default class UserController extends Controller {
 
   // 用户登录
   public async login() {
-    const { ctx, service } = this;
+    const { ctx, service, app } = this;
     const { loginName, password } = ctx.request.body || {};
     let user = await service.user.findUserByLoginName(loginName);
     if (!user) return ctx.throw(401, '用户不存在');
     user = await service.user.checkPassword(user, password);
     if (!user) return ctx.throw(401, '密码错误');
-    ctx.session.userid = user._id;
+    this.userid = user._id;
     // 调用 rotateCsrfSecret 刷新用户的 CSRF token
     ctx.rotateCsrfSecret();
+    app.redis.set(`user_${user._id}`, JSON.stringify(user));
     ctx.body = user;
   }
 
