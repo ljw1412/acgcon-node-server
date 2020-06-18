@@ -14,4 +14,13 @@ export default class BaikeTagController extends Controller {
     delete payload.groupId;
     ctx.body = await service.baike.filter.createTag(groupId, payload);
   }
+
+  public async destroy() {
+    const { ctx, service } = this;
+    ctx.validate({ id: { type: 'string' } }, ctx.params);
+    ctx.validate({ groupId: { type: 'string' } }, ctx.request.body);
+    const { id } = ctx.params;
+    const { groupId } = ctx.request.body || {};
+    ctx.body = await service.baike.filter.deleteTag(groupId, id);
+  }
 }
