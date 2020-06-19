@@ -19,14 +19,24 @@ export default class BaikeFilterService extends Service {
   }
 
   public async listFilter(payload) {
-    return this.BaikeFilter.find(payload).sort({ order: 1 });
+    const filters = await this.BaikeFilter.find(payload).sort({ order: 1 });
+    filters.forEach(filter => {
+      filter.tags = filter.tags.sort((a, b) =>
+        a.order - b.order > 0 ? 1 : -1
+      );
+    });
+    return filters;
   }
 
   public async updateOrder(payload: Record<string, any>) {
-    const { acgType, type } = payload;
-    const list = await this.listFilter({ acgType, type });
-    // TODO: 如何排序修改，防止多线操作异常。
-    console.log(list);
+    const { acgType, type, list } = payload;
+    const groupList = await this.listFilter({ acgType, type });
+    for (const group of groupList) {
+      const index = list.indexOf(group._id.toString());
+      group.order = ~index ? index : 999;
+      await group.save();
+    }
+    return this.listFilter({ acgType, type });
   }
 
   /**
@@ -36,24 +46,16 @@ export default class BaikeFilterService extends Service {
   public async deleteFilterById(id: string) {
     return this.BaikeFilter.findByIdAndDelete(id);
   }
+
   /**
    * 根据标签组id查询标签列表
    * @param groupId 标签组id
    */
-  public async listTagByGroupId(groupId: string) {
+  public async listTagsByGroupId(groupId: string) {
     const filter = await this.BaikeFilter.findById(groupId);
-    return filter ? filter.tags : [];
-  }
-
-  /**
-   * 删除标签
-   * deleteTag
-   */
-  public async deleteTag(groupId: string, id: string) {
-    await this.BaikeFilter.findById(groupId).update({
-      $pull: { tags: { _id: id } }
-    });
-    return await this.listTagByGroupId(groupId);
+    return filter
+      ? filter.tags.sort((a, b) => (a.order - b.order > 0 ? 1 : -1))
+      : [];
   }
 
   public async createTag(groupId, payload: Record<string, any>) {
@@ -70,6 +72,29 @@ export default class BaikeFilterService extends Service {
     await this.BaikeFilter.findById(groupId).update({
       $push: { tags: payload }
     });
-    return await this.listTagByGroupId(groupId);
+    return await this.listTagsByGroupId(groupId);
+  }
+
+  /**
+   * 删除标签
+   * deleteTag
+   */
+  public async deleteTag(groupId: string, id: string) {
+    await this.BaikeFilter.findById(groupId).update({
+      $pull: { tags: { _id: id } }
+    });
+    return await this.listTagsByGroupId(groupId);
+  }
+
+  public async updateTagOrder(payload: any) {
+    const { groupId, list } = payload;
+    const filter = await this.BaikeFilter.findById(groupId);
+    const { tags } = filter;
+    for (const tag of tags) {
+      const index = list.indexOf(tag._id.toString());
+      tag.order = ~index ? index : 999;
+    }
+    await filter.save();
+    return await this.listTagsByGroupId(groupId);
   }
 }

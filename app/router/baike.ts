@@ -4,7 +4,8 @@ import SubRouter from '../util/SubRouter';
 module.exports = (app: Application) => {
   const { controller } = app;
   const mapping = {
-    'POST /filter/update_order': controller.baike.filter.updateOrder
+    'POST /filter/update_order': controller.baike.filter.updateOrder,
+    'POST /tags/update_order': controller.baike.tag.updateOrder
   };
   const subRouter = new SubRouter(app, '/baike');
   subRouter.addMapping(mapping);

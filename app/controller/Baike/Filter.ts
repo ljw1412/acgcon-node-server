@@ -43,6 +43,6 @@ export default class FilterController extends Controller {
       list: { type: 'array', itemType: 'string' }
     });
     const payload = ctx.request.body || {};
-    await service.baike.filter.updateOrder(payload);
+    ctx.body = await service.baike.filter.updateOrder(payload);
   }
 }
