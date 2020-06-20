@@ -9,12 +9,12 @@ const baseRule = {
   type: { type: 'string', required: true }
 };
 
-export default class FilterController extends Controller {
+export default class TagGroupController extends Controller {
   public async index() {
     const { ctx, service } = this;
     ctx.validate(baseRule, ctx.query);
     const payload = ctx.query || {};
-    ctx.body = await service.baike.filter.listFilter(payload);
+    ctx.body = await service.tagGroup.list(payload);
   }
 
   public async create() {
@@ -27,13 +27,13 @@ export default class FilterController extends Controller {
     };
     ctx.validate(createRule);
     const payload = ctx.request.body || {};
-    ctx.body = await service.baike.filter.createFilter(payload);
+    ctx.body = await service.tagGroup.create(payload);
   }
 
   public async destroy() {
     const { ctx, service } = this;
     ctx.validate({ id: { type: 'string' } }, ctx.params);
-    ctx.body = await service.baike.filter.deleteFilterById(ctx.params.id);
+    ctx.body = await service.tagGroup.delete(ctx.params.id);
   }
 
   public async updateOrder() {
@@ -43,6 +43,6 @@ export default class FilterController extends Controller {
       list: { type: 'array', itemType: 'string' }
     });
     const payload = ctx.request.body || {};
-    ctx.body = await service.baike.filter.updateOrder(payload);
+    ctx.body = await service.tagGroup.updateOrder(payload);
   }
 }

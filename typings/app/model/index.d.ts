@@ -2,12 +2,12 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportBaikeFilter from '../../../app/model/BaikeFilter';
+import ExportTagGroup from '../../../app/model/TagGroup';
 import ExportUser from '../../../app/model/User';
 
 declare module 'egg' {
   interface IModel {
-    BaikeFilter: ReturnType<typeof ExportBaikeFilter>;
+    TagGroup: ReturnType<typeof ExportTagGroup>;
     User: ReturnType<typeof ExportUser>;
   }
 }

@@ -3,19 +3,15 @@
 
 import 'egg';
 import ExportBase from '../../../app/controller/base';
-import ExportUser from '../../../app/controller/user';
-import ExportBaikeFilter from '../../../app/controller/Baike/Filter';
-import ExportBaikeTag from '../../../app/controller/Baike/Tag';
-import ExportBaikeIndex from '../../../app/controller/Baike/index';
+import ExportTag from '../../../app/controller/Tag';
+import ExportTagGroup from '../../../app/controller/TagGroup';
+import ExportUser from '../../../app/controller/User';
 
 declare module 'egg' {
   interface IController {
     base: ExportBase;
+    tag: ExportTag;
+    tagGroup: ExportTagGroup;
     user: ExportUser;
-    baike: {
-      filter: ExportBaikeFilter;
-      tag: ExportBaikeTag;
-      index: ExportBaikeIndex;
-    }
   }
 }

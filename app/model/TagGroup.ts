@@ -3,7 +3,7 @@ import { Application } from 'egg';
 module.exports = (app: Application) => {
   const { mongoose } = app;
   const { Schema } = mongoose;
-  const BaikeFilterSchema = new Schema({
+  const TagGroupSchema = new Schema({
     // 名称
     name: String,
     // 图标
@@ -20,5 +20,5 @@ module.exports = (app: Application) => {
     tags: [{ name: String, order: Number }]
   });
 
-  return mongoose.model('BaikeFilter', BaikeFilterSchema, 'baike_filter');
+  return mongoose.model('TagGroup', TagGroupSchema, 'baike_filter');
 };

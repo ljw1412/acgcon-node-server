@@ -12,7 +12,7 @@ export default class BaikeTagController extends Controller {
     const payload = ctx.request.body || {};
     const { groupId } = payload;
     delete payload.groupId;
-    ctx.body = await service.baike.filter.createTag(groupId, payload);
+    ctx.body = await service.tag.create(groupId, payload);
   }
 
   public async destroy() {
@@ -21,7 +21,7 @@ export default class BaikeTagController extends Controller {
     ctx.validate({ groupId: { type: 'string' } }, ctx.request.body);
     const { id } = ctx.params;
     const { groupId } = ctx.request.body || {};
-    ctx.body = await service.baike.filter.deleteTag(groupId, id);
+    ctx.body = await service.tag.deleteTag(groupId, id);
   }
 
   public async updateOrder() {
@@ -31,6 +31,6 @@ export default class BaikeTagController extends Controller {
       list: { type: 'array', itemType: 'string' }
     });
     const payload = ctx.request.body || {};
-    ctx.body = await service.baike.filter.updateTagOrder(payload);
+    ctx.body = await service.tag.updateOrder(payload);
   }
 }
