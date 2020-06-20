@@ -20,5 +20,5 @@ module.exports = (app: Application) => {
     tags: [{ name: String, order: Number }]
   });
 
-  return mongoose.model('TagGroup', TagGroupSchema, 'baike_filter');
+  return mongoose.model('TagGroup', TagGroupSchema, 'tag_groups');
 };
