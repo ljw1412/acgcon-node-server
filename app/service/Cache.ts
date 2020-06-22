@@ -1,13 +1,14 @@
 import { Service } from 'egg';
 
 export default class GenTokenService extends Service {
-  public async list({ type, count }: any) {
+  public async list({ type, count, keyword }: any) {
     const { app } = this;
-    const stream = app.redis.scanStream({ match: `${type}_*`, count });
+    const match = type === 'all' ? `*${keyword}*` : `${type}:*${keyword}*`;
+    const stream = app.redis.scanStream({ match, count });
     return await new Promise((resolve, reject) => {
       const list: any[] = [];
       stream.on('data', function(resultKeys) {
-        for (var i = 0; i < resultKeys.length; i++) {
+        for (let i = 0; i < resultKeys.length; i++) {
           list.push(resultKeys[i]);
         }
       });

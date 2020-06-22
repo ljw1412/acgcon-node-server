@@ -8,6 +8,7 @@ export default class TagService extends Service {
   /**
    * 增加标签
    * @param groupId 标签组id
+   * @param tag 标签数据对象
    * @param tag.name 标签名称
    * @param tag.order 标签排序权重
    */
@@ -52,6 +53,7 @@ export default class TagService extends Service {
 
   /**
    * 更新标签排序
+   * @param payload 负荷
    * @param payload.groupId 标签组id
    * @param payload.list 排序列表
    */

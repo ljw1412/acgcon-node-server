@@ -1,4 +1,5 @@
-import { Controller } from 'egg';
+import BaseController from './base';
+import { USER_PREFIX } from '../constant/cache';
 
 const USER_CREATE_TRANSFER = {
   username: {
@@ -28,7 +29,7 @@ const USER_CREATE_TRANSFER = {
   }
 };
 
-export default class UserController extends Controller {
+export default class UserController extends BaseController {
   get userid() {
     return this.ctx.session.userid;
   }
@@ -82,19 +83,20 @@ export default class UserController extends Controller {
    * 当前用户
    */
   public async whoami() {
-    const { ctx, app, service, userid } = this;
+    const { ctx, service, userid } = this;
     if (!userid) {
       ctx.body = {};
       return;
     }
     if (ctx.user) {
+      ctx.res.setHeader('acg-data-from', 'cache');
       ctx.body = ctx.user;
       return;
     }
     // 从数据库里获取用户信息
     const userInDB = await service.user.show(userid);
     if (userInDB) {
-      app.redis.set(`user_${userInDB._id}`, JSON.stringify(userInDB));
+      this.redis.set(USER_PREFIX + userInDB._id, JSON.stringify(userInDB));
     }
     ctx.body = userInDB || {};
   }
@@ -112,7 +114,7 @@ export default class UserController extends Controller {
 
   // 用户登录
   public async login() {
-    const { ctx, service, app } = this;
+    const { ctx, service } = this;
     const { loginName, password } = ctx.request.body || {};
     let user = await service.user.findUserByLoginName(loginName);
     if (!user) return ctx.throw(401, '用户不存在');
@@ -121,7 +123,7 @@ export default class UserController extends Controller {
     this.userid = user._id;
     // 调用 rotateCsrfSecret 刷新用户的 CSRF token
     ctx.rotateCsrfSecret();
-    app.redis.set(`user_${user._id}`, JSON.stringify(user));
+    this.redis.set(USER_PREFIX + user._id, JSON.stringify(user));
     ctx.body = user;
   }
 

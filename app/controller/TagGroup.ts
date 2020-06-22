@@ -1,4 +1,5 @@
-import { Controller } from 'egg';
+import BaseController from './base';
+import { TAG_PREFIX } from '../constant/cache';
 
 const baseRule = {
   acgType: {
@@ -9,12 +10,22 @@ const baseRule = {
   type: { type: 'string', required: true }
 };
 
-export default class TagGroupController extends Controller {
+export default class TagGroupController extends BaseController {
   public async index() {
     const { ctx, service } = this;
     ctx.validate(baseRule, ctx.query);
     const payload = ctx.query || {};
-    ctx.body = await service.tagGroup.list(payload);
+    const { acgType, type } = payload;
+    const cacheKey = `${TAG_PREFIX}${acgType}_${type}`;
+    const cache = await this.redis.get(cacheKey);
+    if (cache) {
+      ctx.res.setHeader('acg-data-from', 'cache');
+      ctx.body = cache;
+      return;
+    }
+    const result = (await service.tagGroup.list(payload)) || [];
+    this.redis.set(cacheKey, JSON.stringify(result));
+    ctx.body = result;
   }
 
   public async create() {

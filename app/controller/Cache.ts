@@ -3,15 +3,17 @@ import { Controller } from 'egg';
 export default class CacheController extends Controller {
   public async index() {
     const { ctx, service } = this;
-    if (ctx.query.count) {
-      ctx.query.count = ctx.query.count >> 0;
-    }
+    const { query } = ctx;
+    if (query.count) query.count = query.count >> 0;
+    if (!query.keyword) query.keyword = '*';
     const rule = {
       type: { type: 'string' },
-      count: { type: 'number', default: 100 }
+      count: { type: 'number', default: 100 },
+      keyword: { type: 'string', default: '*', allowEmpty: true }
     };
-    ctx.validate(rule, ctx.query);
-    ctx.body = await service.cache.list(ctx.query);
+    ctx.validate(rule, query);
+
+    ctx.body = await service.cache.list(query);
   }
 
   public async show() {

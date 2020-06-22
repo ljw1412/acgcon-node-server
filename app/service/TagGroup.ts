@@ -24,7 +24,7 @@ export default class TagGroupService extends Service {
 
   /**
    * 展示标签组列表
-   * @param payload
+   * @param payload 负荷
    */
   public async list(payload) {
     const filters = await this.TagGroup.find(payload).sort({ order: 1 });
@@ -45,6 +45,7 @@ export default class TagGroupService extends Service {
 
   /**
    * 更新标签组排序
+   * @param payload 负荷
    * @param payload.acgType acg类型
    * @param payload.type 二级类型
    * @param payload.list 排序列表
