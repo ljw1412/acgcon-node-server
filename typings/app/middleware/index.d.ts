@@ -3,9 +3,11 @@
 
 import 'egg';
 import ExportCurrentUser from '../../../app/middleware/CurrentUser';
+import ExportTagCache from '../../../app/middleware/TagCache';
 
 declare module 'egg' {
   interface IMiddleware {
     currentUser: typeof ExportCurrentUser;
+    tagCache: typeof ExportTagCache;
   }
 }

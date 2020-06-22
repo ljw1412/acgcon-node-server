@@ -56,4 +56,10 @@ export default class TagGroupController extends BaseController {
     const payload = ctx.request.body || {};
     ctx.body = await service.tagGroup.updateOrder(payload);
   }
+
+  public async resetCache() {
+    const { ctx } = this;
+    ctx.validate(baseRule);
+    ctx.body = { success: true };
+  }
 }

@@ -5,7 +5,8 @@ module.exports = (app: Application) => {
   const { controller, router } = app;
   // 标签组路由
   const groupMapping = {
-    'POST /update_order': controller.tagGroup.updateOrder
+    'POST /update_order': controller.tagGroup.updateOrder,
+    'POST /reset_cache': controller.tagGroup.resetCache
   };
   const groupRouter = new SubRouter(app, '/tag-group');
   groupRouter.addMapping(groupMapping);

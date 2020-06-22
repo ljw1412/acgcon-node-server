@@ -1,4 +1,4 @@
-import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import { EggAppConfig, EggAppInfo, PowerPartial, Context } from 'egg';
 
 export default (appInfo: EggAppInfo) => {
   const config = {
@@ -33,7 +33,7 @@ export default (appInfo: EggAppInfo) => {
   config.keys = appInfo.name + '_1581310668696_3264';
 
   // add your egg config in here
-  config.middleware = ['currentUser'];
+  config.middleware = ['currentUser', 'tagCache'];
 
   config.cdnDomain = '';
 
@@ -45,7 +45,12 @@ export default (appInfo: EggAppInfo) => {
 
   // add your special config in here
   const bizConfig = {
-    currentUser: {}
+    currentUser: {},
+    tagCache: {
+      match(ctx: Context) {
+        return /^\/tag/.test(ctx.url) && ctx.method !== 'GET';
+      }
+    }
   };
 
   // the return config will combines to EggAppConfig

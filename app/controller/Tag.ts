@@ -1,6 +1,6 @@
-import { Controller } from 'egg';
+import BaseController from './base';
 
-export default class BaikeTagController extends Controller {
+export default class BaikeTagController extends BaseController {
   public async create() {
     const { ctx, service } = this;
     const createRule = {
