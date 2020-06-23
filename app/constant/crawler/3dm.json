@@ -1,0 +1,24 @@
+[
+  {
+    "name": "3dm",
+    "url": "https://www.3dmgame.com/news/game/",
+    "origin": "https://www.3dmgame.com",
+    "acgType": "game",
+    "type": "html",
+    "next": ".pagination .next > a|href",
+    "limit": 10,
+    "item": ".selectpost",
+    "mapping": {
+      "url": ".bt|href",
+      "title": ".bt",
+      "cover": {
+        "selector": ".img > img",
+        "type": "attr",
+        "attr": "src",
+        "format": "https://www.3dmgame.com{value}"
+      },
+      "time": ".time",
+      "desc": ".miaoshu"
+    }
+  }
+]

@@ -1,0 +1,44 @@
+import { Service } from 'egg';
+import { Crawler } from '@ljw1412/web-crawler';
+import { formatRule, getTargetValue } from '../util/CrawlerParser';
+
+const path = require('path');
+
+export default class CrawlerService extends Service {
+  async start(type: string) {
+    const rulePath = path.join(__dirname, `../constant/crawler/${type}.json`);
+    const rules = await import(rulePath);
+
+    const crawler = new Crawler();
+    formatRule(rules).forEach(rule => {
+      const { limit = Infinity, name, acgType } = rule;
+      let index = 1;
+
+      crawler.addPage({ url: rule.url, type: rule.type, tag: acgType });
+      crawler.on('data', ({ $, page }) => {
+        if (!$) return;
+        $(rule.item).each(function(_i, el) {
+          const item: Record<string, any> = { acgType, from: name };
+          Object.keys(rule.mapping).forEach(key => {
+            try {
+              item[key] = getTargetValue($, el, rule.mapping[key]);
+            } catch (error) {
+              console.error(error.message + `\n ${page.url}`);
+            }
+          });
+          console.log(item);
+        });
+        if (rule.next && index < limit) {
+          index++;
+          const url = getTargetValue($, null, rule.next);
+          if (url) crawler.addPage({ url, type: 'html', tag: acgType });
+        }
+      });
+    });
+
+    crawler.on('end', () => {
+      console.log('end');
+    });
+    crawler.start();
+  }
+}
