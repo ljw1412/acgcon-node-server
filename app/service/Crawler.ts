@@ -5,17 +5,17 @@ import { formatRule, getTargetValue } from '../util/CrawlerParser';
 const path = require('path');
 
 export default class CrawlerService extends Service {
-  async start(type: string) {
+  public async start(type: string) {
     const rulePath = path.join(__dirname, `../constant/crawler/${type}.json`);
     const rules = await import(rulePath);
 
-    const crawler = new Crawler();
+    const crawler = new Crawler({ concurrency: 5 });
     formatRule(rules).forEach(rule => {
       const { limit = Infinity, name, acgType } = rule;
       let index = 1;
 
       crawler.addPage({ url: rule.url, type: rule.type, tag: acgType });
-      crawler.on('data', ({ $, page }) => {
+      crawler.on(`data#${acgType}`, ({ $, page }) => {
         if (!$) return;
         $(rule.item).each(function(_i, el) {
           const item: Record<string, any> = { acgType, from: name };

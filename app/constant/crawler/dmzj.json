@@ -27,7 +27,7 @@
   "mapping": {
     "url": "h3 > a|href",
     "title": "h3 > a",
-    "cover": "dec_img > img|src",
+    "cover": ".dec_img > img|src",
     "time": ".head_con_p_o > span:nth-child(1)",
     "desc": ".com_about"
   }
