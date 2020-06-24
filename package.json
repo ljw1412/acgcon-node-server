@@ -22,7 +22,7 @@
     "clean": "ets clean"
   },
   "dependencies": {
-    "@ljw1412/web-crawler": "^0.0.18",
+    "@ljw1412/web-crawler": "^0.0.19",
     "egg": "^2.6.1",
     "egg-cors": "^2.2.3",
     "egg-jwt": "^3.1.7",

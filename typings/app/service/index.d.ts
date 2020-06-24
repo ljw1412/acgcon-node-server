@@ -9,6 +9,7 @@ type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? R
 import ExportCache from '../../../app/service/Cache';
 import ExportCrawler from '../../../app/service/Crawler';
 import ExportGenToken from '../../../app/service/GenToken';
+import ExportInformation from '../../../app/service/Information';
 import ExportRequest from '../../../app/service/Request';
 import ExportTag from '../../../app/service/Tag';
 import ExportTagGroup from '../../../app/service/TagGroup';
@@ -19,6 +20,7 @@ declare module 'egg' {
     cache: AutoInstanceType<typeof ExportCache>;
     crawler: AutoInstanceType<typeof ExportCrawler>;
     genToken: AutoInstanceType<typeof ExportGenToken>;
+    information: AutoInstanceType<typeof ExportInformation>;
     request: AutoInstanceType<typeof ExportRequest>;
     tag: AutoInstanceType<typeof ExportTag>;
     tagGroup: AutoInstanceType<typeof ExportTagGroup>;

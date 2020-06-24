@@ -56,7 +56,7 @@ export default class CrawlerService extends Service {
     });
 
     crawler.on('end', () => {
-      console.log('end');
+      console.log('爬取结束');
     });
     crawler.start();
   }

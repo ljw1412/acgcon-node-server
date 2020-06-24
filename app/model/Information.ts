@@ -15,7 +15,7 @@ module.exports = (app: Application) => {
     // 封面
     cover: String,
     // 时间
-    time: String,
+    time: { type: Date, default: Date.now },
     // 描述
     desc: String
   });
