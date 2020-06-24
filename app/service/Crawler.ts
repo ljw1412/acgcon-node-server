@@ -5,9 +5,28 @@ import { formatRule, getTargetValue } from '../util/CrawlerParser';
 const path = require('path');
 
 export default class CrawlerService extends Service {
+  get Information() {
+    return this.ctx.model.Information;
+  }
+
+  /**
+   * 以url为唯一值进行保存
+   * @param item 资讯对象
+   */
+  public async save(item: any) {
+    const isExists = await this.Information.exists({ url: item.url });
+    if (isExists) return;
+    await this.Information.create(item);
+  }
+
+  /**
+   * 开始爬取
+   * @param type 规则类型
+   */
   public async start(type: string) {
     const rulePath = path.join(__dirname, `../constant/crawler/${type}.json`);
     const rules = await import(rulePath);
+    console.log('开始爬取', type);
 
     const crawler = new Crawler({ concurrency: 5 });
     formatRule(rules).forEach(rule => {
@@ -17,7 +36,7 @@ export default class CrawlerService extends Service {
       crawler.addPage({ url: rule.url, type: rule.type, tag: acgType });
       crawler.on(`data#${acgType}`, ({ $, page }) => {
         if (!$) return;
-        $(rule.item).each(function(_i, el) {
+        $(rule.item).each((_i, el) => {
           const item: Record<string, any> = { acgType, from: name };
           Object.keys(rule.mapping).forEach(key => {
             try {
@@ -26,7 +45,7 @@ export default class CrawlerService extends Service {
               console.error(error.message + `\n ${page.url}`);
             }
           });
-          console.log(item);
+          this.save(item);
         });
         if (rule.next && index < limit) {
           index++;
