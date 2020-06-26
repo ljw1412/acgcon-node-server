@@ -14,5 +14,6 @@ export default class InformationSchedule extends Subscription {
   async subscribe() {
     const { service } = this.ctx;
     await service.crawler.start('dmzj');
+    await service.crawler.start('3dm');
   }
 }

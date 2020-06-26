@@ -13,4 +13,10 @@ export default class InformationService extends Service {
       .limit(size);
     return { count, list };
   }
+
+  public async listLimit(num: number) {
+    return await this.Information.find()
+      .sort({ time: -1 })
+      .limit(num);
+  }
 }

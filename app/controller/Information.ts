@@ -18,4 +18,34 @@ export default class InformationController extends BaseController {
     ctx.validate(rule, query);
     ctx.body = await service.information.list(query);
   }
+
+  public async show() {}
+
+  /**
+   * 获得最新列表
+   */
+  public async listLastest() {
+    const { service, ctx } = this;
+    const { query } = ctx;
+    if (query.count) query.count = query.count >> 0;
+    ctx.validate(
+      {
+        acgType: {
+          type: 'enum',
+          values: ['animation', 'comic', 'game'],
+          required: false
+        },
+        count: { type: 'number', max: 100, min: 1 }
+      },
+      query
+    );
+
+    ctx.body = query.acgType
+      ? await service.information.list({
+          acgType: query.acgType,
+          index: 1,
+          size: query.count
+        })
+      : await service.information.listLimit(query.count);
+  }
 }
