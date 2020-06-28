@@ -86,6 +86,14 @@ export function formatHtmlRule(rule: Rule) {
 }
 
 /**
+ * 格式化Api解析规则
+ * @param rule 规则
+ */
+export function formatApiRule(rule: Rule) {
+  return rule;
+}
+
+/**
  * 格式化规则
  * @param rules 规则
  */
@@ -94,6 +102,8 @@ export function formatRule(rules: Rule | Rule[]) {
   const formatedRules = rules.map(rule => {
     if (rule.type === 'html') {
       return formatHtmlRule(rule);
+    } else if (rule.api === 'api') {
+      return formatApiRule(rule);
     }
     return rule;
   });
@@ -123,4 +133,19 @@ export function getTargetValue(
   return value;
 }
 
-export default { formatSelector, formatRule, formatHtmlRule, getTargetValue };
+export function updateParams(params, keyword, value) {
+  if (typeof params === 'string') {
+    params = params.replace(keyword, value);
+  } else if (typeof params === 'object') {
+    Object.keys(params).forEach(key => {
+      if (typeof params[key] === 'object') {
+        updateParams(params[key], keyword, value);
+        return;
+      }
+      if (params[key] === keyword) {
+        params[key] = value;
+      }
+    });
+  }
+  return params;
+}

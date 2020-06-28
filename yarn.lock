@@ -222,10 +222,10 @@
   dependencies:
     vary "^1.1.2"
 
-"@ljw1412/web-crawler@^0.0.19":
-  version "0.0.19"
-  resolved "https://registry.yarnpkg.com/@ljw1412/web-crawler/-/web-crawler-0.0.19.tgz#dd6bd1f8b29d7a80f613bcddb0ff33946996ba98"
-  integrity sha512-WOyDSqqJiuu+DLipgrRmC26KMy7kG43XX3pQBxuQ/gIYsQouQAsilpmHT1cH0aWZbn3gelIQ+lPND2cgN/NYnA==
+"@ljw1412/web-crawler@^0.0.20":
+  version "0.0.20"
+  resolved "https://registry.yarnpkg.com/@ljw1412/web-crawler/-/web-crawler-0.0.20.tgz#03a2fca84d25cf18da1d0314ad2adc9b51e19bff"
+  integrity sha512-MoH3HvSfS9dFCUjWaPUiv4GZIOpbQfY4C5w6wzk3OPHrRh6zkcyyjIxhTqhMafmMKxP3RangTo1vVZBcSWLjbw==
   dependencies:
     "@types/cheerio" "^0.22.18"
     "@types/puppeteer" "^3.0.0"

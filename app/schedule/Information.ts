@@ -15,5 +15,6 @@ export default class InformationSchedule extends Subscription {
     const { service } = this.ctx;
     await service.crawler.start('dmzj');
     await service.crawler.start('3dm');
+    await service.crawler.start('gamersky');
   }
 }

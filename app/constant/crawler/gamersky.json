@@ -1,0 +1,54 @@
+[
+  {
+    "name": "gamersky",
+    "url": "https://db2.gamersky.com/LabelJsonpAjax.aspx",
+    "params": {
+      "jsondata": {
+        "type": "updatenodelabel",
+        "isCache": true,
+        "cacheTime": 60,
+        "nodeId": "20388",
+        "isNodeId": "true",
+        "page": "{page}"
+      },
+      "_": "{timestamp}"
+    },
+    "acgType": "comic",
+    "type": "file",
+    "limit": 5,
+    "item": ".ptxt",
+    "mapping": {
+      "url": ".tit > a|href",
+      "title": ".tit > a",
+      "cover": ".img > a > img|src",
+      "time": ".con > .tem > .time",
+      "desc": ".con > .txt"
+    }
+  },
+  {
+    "name": "gamersky",
+    "url": "https://db2.gamersky.com/LabelJsonpAjax.aspx",
+    "params": {
+      "jsondata": {
+        "type": "updatenodelabel",
+        "isCache": true,
+        "cacheTime": 60,
+        "nodeId": "20387",
+        "isNodeId": "true",
+        "page": "{page}"
+      },
+      "_": "{timestamp}"
+    },
+    "acgType": "animation",
+    "type": "file",
+    "limit": 5,
+    "item": ".ptxt",
+    "mapping": {
+      "url": ".tit > a|href",
+      "title": ".tit > a",
+      "cover": ".img > a > img|src",
+      "time": ".con > .tem > .time",
+      "desc": ".con > .txt"
+    }
+  }
+]
