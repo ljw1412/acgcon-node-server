@@ -19,8 +19,6 @@ export default class InformationController extends BaseController {
     ctx.body = await service.information.list(query);
   }
 
-  public async show() {}
-
   /**
    * 获得最新列表
    */
@@ -40,12 +38,14 @@ export default class InformationController extends BaseController {
       query
     );
 
-    ctx.body = query.acgType
-      ? await service.information.list({
-          acgType: query.acgType,
-          index: 1,
-          size: query.count
-        })
-      : await service.information.listLimit(query.count);
+    if (query.acgType) {
+      ctx.body = await service.information.list({
+        acgType: query.acgType,
+        index: 1,
+        size: query.count
+      });
+    } else {
+      ctx.body = await service.information.listLimit(query.count);
+    }
   }
 }

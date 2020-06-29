@@ -73,13 +73,13 @@ export default class CrawlerService extends Service {
    * @param crawler 爬虫实例
    */
   private async loadHtmlCrawler(rule: any, crawler: Crawler) {
-    const { limit = Infinity, name, acgType } = rule;
+    const { limit = Infinity, name, acgType, review = false } = rule;
     let index = 1;
     crawler.addPage({ url: rule.url, type: 'html', tag: `${name}_${acgType}` });
     crawler.on(`data#${name}_${acgType}`, ({ $, page }) => {
       if (!$) return;
       $(rule.item).each((_i, el) => {
-        const item: Record<string, any> = { acgType, from: name };
+        const item: object = { acgType, from: name, state: review ? 0 : 1 };
         Object.keys(rule.mapping).forEach(key => {
           try {
             item[key] = getTargetValue($, el, rule.mapping[key]);
@@ -87,6 +87,8 @@ export default class CrawlerService extends Service {
             console.error(error.message + `\n ${page.url}`);
           }
         });
+        // console.log(item);
+
         this.save(item);
       });
       if (rule.next && index < limit) {

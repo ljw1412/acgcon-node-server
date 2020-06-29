@@ -17,7 +17,9 @@ module.exports = (app: Application) => {
     // 时间
     time: { type: Date, default: Date.now },
     // 描述
-    desc: String
+    desc: String,
+    // 状态 -1=隐藏 0=待审核 1=上线
+    state: Number
   });
 
   return mongoose.model('Information', InformationSchema);

@@ -19,6 +19,7 @@ interface BaseRule {
   next: SelectorRule;
   limit: number;
   item: string;
+  review?: boolean;
   mapping: {
     url: SelectorRule;
     title: SelectorRule;
