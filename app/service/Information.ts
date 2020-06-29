@@ -23,7 +23,10 @@ export default class InformationService extends Service {
    * @param num 获取的数量
    */
   public async listLimit(num: number) {
-    return await this.Information.find({ state: 1 })
+    return await this.Information.find({
+      state: 1,
+      acgType: { $not: /unknown/ }
+    })
       .sort({ time: -1 })
       .limit(num);
   }

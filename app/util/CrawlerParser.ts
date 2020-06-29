@@ -20,26 +20,25 @@ interface BaseRule {
   limit: number;
   item: string;
   review?: boolean;
-  mapping: {
-    url: SelectorRule;
-    title: SelectorRule;
-    cover: SelectorRule;
-    time: SelectorRule;
-    desc: SelectorRule;
-  };
+  mapping: Record<string, SelectorRule>;
   [key: string]: any;
 }
 
-interface MultiSiteRule extends BaseRule {
+export interface MultiSiteRule extends BaseRule {
   website: { url: string; acgType: AcgType }[];
 }
 
-interface SimpleSiteRule extends BaseRule {
+export interface SimpleSiteRule extends BaseRule {
   url: string;
   acgType: AcgType;
 }
 
-type Rule = MultiSiteRule | SimpleSiteRule;
+export interface FormatedRule extends BaseRule {
+  next: SelectorRuleConfig;
+  mapping: Record<string, SelectorRuleConfig>;
+}
+
+export type Rule = MultiSiteRule | SimpleSiteRule;
 
 /**
  * 自定义选择器字符串解析
@@ -69,7 +68,7 @@ export function formatSelector(str: SelectorRule) {
  * 格式化HTML解析规则
  * @param rule 规则
  */
-export function formatHtmlRule(rule: Rule) {
+export function formatHtmlRule(rule: Rule): FormatedRule {
   const { next, mapping, website } = rule;
   if (next) {
     rule.next = formatSelector(next);
@@ -83,7 +82,7 @@ export function formatHtmlRule(rule: Rule) {
   if (website) {
     return website.map(item => Object.assign(exclude(rule, 'website'), item));
   }
-  return rule;
+  return rule as FormatedRule;
 }
 
 /**
@@ -130,6 +129,7 @@ export function getTargetValue(
   if (type === 'attr') value = target.attr(attr!) || '';
   if (format) {
     value = format.replace('{value}', value);
+    value = value.replace('{year}', new Date().getFullYear() + '');
   }
   return value;
 }
