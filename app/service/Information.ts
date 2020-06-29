@@ -7,14 +7,17 @@ export default class InformationService extends Service {
 
   /**
    * 分页获取资讯列表
-   * @param param0 参数
+   * @param query 参数
    */
-  public async list({ acgType, index, size, state = 1 }) {
-    const count = await this.Information.countDocuments({ acgType, state });
-    const list = await this.Information.find({ acgType, state })
+  public async list(query: Record<string, any>) {
+    const { pageIndex, pageSize } = query;
+    delete query.pageIndex;
+    delete query.pageSize;
+    const count = await this.Information.countDocuments(query);
+    const list = await this.Information.find(query)
       .sort({ time: -1 })
-      .skip((index - 1) * size)
-      .limit(size);
+      .skip((pageIndex - 1) * pageSize)
+      .limit(pageSize);
     return { count, list };
   }
 
@@ -29,5 +32,11 @@ export default class InformationService extends Service {
     })
       .sort({ time: -1 })
       .limit(num);
+  }
+
+  public async listFrom(payload: Record<string, any>) {
+    return await this.Information.aggregate()
+      .match(payload)
+      .group({ _id: '$from' });
   }
 }

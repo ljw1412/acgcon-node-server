@@ -1,19 +1,21 @@
 import BaseController from './base';
+import { INFORMATION_FROM_MAP } from '../constant/mapping';
 
 export default class InformationController extends BaseController {
   public async index() {
     const { service, ctx } = this;
     const { query } = ctx;
-    if (query.index) query.index = query.index >> 0;
-    if (query.size) query.size = query.size >> 0;
+    if (query.pageIndex) query.pageIndex = query.pageIndex >> 0;
+    if (query.pageSize) query.pageSize = query.pageSize >> 0;
     const rule = {
       acgType: {
         type: 'enum',
         values: ['animation', 'comic', 'game'],
-        required: true
+        required: false
       },
-      index: { type: 'number', default: 1 },
-      size: { type: 'number', default: 20 }
+      pageIndex: { type: 'number', default: 1 },
+      pageSize: { type: 'number', default: 20 },
+      state: { type: 'number', required: false }
     };
     ctx.validate(rule, query);
     ctx.body = await service.information.list(query);
@@ -41,11 +43,27 @@ export default class InformationController extends BaseController {
     if (query.acgType) {
       ctx.body = await service.information.list({
         acgType: query.acgType,
-        index: 1,
-        size: query.count
+        pageIndex: 1,
+        pageSize: query.count
       });
     } else {
       ctx.body = await service.information.listLimit(query.count);
     }
+  }
+
+  /**
+   * 列出信息来源列表
+   */
+  public async listAllFrom() {
+    const { service, ctx } = this;
+    const { query } = ctx;
+    const payload: Record<string, any> = {};
+    if (query.acgType) payload.acgType = query.acgType;
+    const list = await service.information.listFrom(payload);
+
+    ctx.body = list.map(({ _id }) => ({
+      value: _id,
+      label: INFORMATION_FROM_MAP[_id] || _id
+    }));
   }
 }

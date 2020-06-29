@@ -6,15 +6,16 @@ export default class InformationSchedule extends Subscription {
     return {
       immediate: true,
       // cron: '0 */6 * * *', // 6个小时整点
-      interval: '60m', // 每60分钟
+      interval: '120m', // 每60分钟
       type: 'all' // 指定所有的 worker 都需要执行
     };
   }
 
   async subscribe() {
     const { service } = this.ctx;
-    await service.crawler.start('dmzj');
-    await service.crawler.start('3dm');
-    await service.crawler.start('gamersky');
+    const types = ['dmzj', '3dm', 'gamersky', 'ali213'];
+    for (const type of types) {
+      await service.crawler.start(type);
+    }
   }
 }
