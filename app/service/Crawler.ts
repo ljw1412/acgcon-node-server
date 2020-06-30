@@ -46,7 +46,7 @@ export default class CrawlerService extends Service {
   private parseHtmlAndSave($: CheerioSelector, rule: FormatedRule, page: Page) {
     const { item, acgType, name, review, mapping } = rule;
     $(item).each((_i, el) => {
-      const item: object = { acgType, from: name, state: review ? 0 : 1 };
+      const item: object = { acgType, origin: name, state: review ? 0 : 1 };
       Object.keys(mapping).forEach(key => {
         try {
           item[key] = getTargetValue($, el, mapping[key]);

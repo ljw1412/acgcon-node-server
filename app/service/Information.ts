@@ -23,20 +23,19 @@ export default class InformationService extends Service {
 
   /**
    * 按时间倒序获得已上线的一定数量的资讯
+   * @param acgType acg类型
    * @param num 获取的数量
    */
-  public async listLimit(num: number) {
-    return await this.Information.find({
-      state: 1,
-      acgType: { $not: /unknown/ }
-    })
+  public async listLimit(acgType: string, num: number) {
+    const query = { state: 1, acgType: acgType || { $not: /unknown/ } };
+    return await this.Information.find(query)
       .sort({ time: -1 })
       .limit(num);
   }
 
-  public async listFrom(payload: Record<string, any>) {
+  public async listOrigin(payload: Record<string, any>) {
     return await this.Information.aggregate()
       .match(payload)
-      .group({ _id: '$from' });
+      .group({ _id: '$origin' });
   }
 }

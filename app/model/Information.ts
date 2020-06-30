@@ -9,7 +9,7 @@ module.exports = (app: Application) => {
     // acg类型
     acgType: String,
     // 来源
-    from: String,
+    origin: String,
     // 标题
     title: String,
     // 封面

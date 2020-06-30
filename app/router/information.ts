@@ -5,8 +5,7 @@ module.exports = (app: Application) => {
   const { router, controller } = app;
 
   const mapping = {
-    'GET /lastest': controller.information.listLastest,
-    'GET /list_from': controller.information.listAllFrom
+    'GET /origins': controller.information.listOrigin
   };
   const subRouter = new SubRouter(app, '/information');
   subRouter.addMapping(mapping);
