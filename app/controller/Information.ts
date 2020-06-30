@@ -10,12 +10,14 @@ export default class InformationController extends BaseController {
     const { query } = ctx;
     if (query.pageIndex) query.pageIndex = query.pageIndex >> 0;
     if (query.pageSize) query.pageSize = query.pageSize >> 0;
+    if (query.state) query.state = parseInt(query.state);
     const rule = {
       acgType: {
         type: 'enum',
         values: ['animation', 'comic', 'game'],
         required: false
       },
+      origin: { type: 'string', required: false },
       pageIndex: { type: 'number', required: false, default: 1 },
       pageSize: { type: 'number', required: false, default: 20 },
       state: { type: 'number', required: false, default: 1 }
