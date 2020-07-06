@@ -47,6 +47,17 @@ export default class TagGroupController extends BaseController {
     ctx.body = await service.tagGroup.delete(ctx.params.id);
   }
 
+  public async updateMultiple() {
+    const { ctx, service } = this;
+    ctx.validate({
+      ...baseRule,
+      groupId: { type: 'string' },
+      state: { type: 'boolean' }
+    });
+    const payload = ctx.request.body || {};
+    ctx.body = await service.tagGroup.updateMultiple(payload);
+  }
+
   public async updateOrder() {
     const { ctx, service } = this;
     ctx.validate({

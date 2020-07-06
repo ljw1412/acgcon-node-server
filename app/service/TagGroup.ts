@@ -44,6 +44,20 @@ export default class TagGroupService extends Service {
   }
 
   /**
+   * 更新标签组的多选状态
+   * @param payload 负荷
+   * @param payload.groupId 标签组id
+   * @param payload.state 标签组多选状态
+   */
+  updateMultiple(payload: any) {
+    const { groupId, state } = payload;
+    return this.TagGroup.update(
+      { _id: groupId },
+      { $set: { multiple: state } }
+    );
+  }
+
+  /**
    * 更新标签组排序
    * @param payload 负荷
    * @param payload.acgType acg类型
