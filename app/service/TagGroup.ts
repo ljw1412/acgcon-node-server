@@ -44,14 +44,25 @@ export default class TagGroupService extends Service {
   }
 
   /**
+   * 标签组名称重命名
+   * @param payload 负荷
+   * @param payload.groupId 标签组id
+   * @param payload.name 新名称
+   */
+  public async rename(payload: any) {
+    const { groupId, name } = payload;
+    return this.TagGroup.updateOne({ _id: groupId }, { $set: { name } });
+  }
+
+  /**
    * 更新标签组的多选状态
    * @param payload 负荷
    * @param payload.groupId 标签组id
    * @param payload.state 标签组多选状态
    */
-  updateMultiple(payload: any) {
+  public async updateMultiple(payload: any) {
     const { groupId, state } = payload;
-    return this.TagGroup.update(
+    return this.TagGroup.updateOne(
       { _id: groupId },
       { $set: { multiple: state } }
     );

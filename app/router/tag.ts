@@ -5,6 +5,7 @@ module.exports = (app: Application) => {
   const { controller, router } = app;
   // 标签组路由
   const groupMapping = {
+    'POST /rename': controller.tagGroup.rename,
     'POST /update_multiple': controller.tagGroup.updateMultiple,
     'POST /update_order': controller.tagGroup.updateOrder,
     'POST /reset_cache': controller.tagGroup.resetCache
