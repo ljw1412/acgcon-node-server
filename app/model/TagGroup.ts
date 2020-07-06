@@ -17,7 +17,13 @@ module.exports = (app: Application) => {
     // 是否允许多选
     multiple: { type: Boolean, default: false },
     // 标签列表
-    tags: [{ name: String, order: Number }]
+    tags: [
+      {
+        name: String,
+        order: Number,
+        isAll: { type: Boolean, default: false }
+      }
+    ]
   });
 
   return mongoose.model('TagGroup', TagGroupSchema, 'tag_groups');

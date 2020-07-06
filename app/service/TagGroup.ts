@@ -19,6 +19,7 @@ export default class TagGroupService extends Service {
       const nextOrder = result ? result.maxOrder + 1 : 1;
       group.order = nextOrder;
     }
+    group.tags = [{ name: '全部', order: 0, isAll: true }];
     return this.TagGroup.create(group);
   }
 
