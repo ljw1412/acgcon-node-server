@@ -6,7 +6,8 @@
     "@typescript-eslint/no-var-requires": "off",
     "array-bracket-spacing": "off",
     "no-bitwise": "off",
-    "no-confusing-arrow": "off"
+    "no-confusing-arrow": "off",
+    "arrow-parens": "off"
   },
   "parserOptions": {
     "project": "./tsconfig.json"

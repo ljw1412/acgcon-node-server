@@ -12,7 +12,7 @@ export default class TagService extends Service {
    * @param tag.name 标签名称
    * @param tag.order 标签排序权重
    */
-  public async create(groupId, tag: Record<string, any>) {
+  public async create(groupId, tag) {
     const { ctx } = this;
     const filter = await this.TagGroup.findById(groupId);
     if (!filter) {
@@ -20,7 +20,7 @@ export default class TagService extends Service {
       return;
     }
     if (!tag.order) {
-      const nextOrder = Math.max(0, ...filter.tags.map(tag => tag.order)) + 1;
+      const nextOrder = Math.max(0, ...filter.tags.map((tag) => tag.order)) + 1;
       tag.order = nextOrder;
     }
     await this.TagGroup.updateOne({ _id: groupId }, { $push: { tags: tag } });
@@ -46,7 +46,7 @@ export default class TagService extends Service {
   public async deleteTag(groupId: string, id: string) {
     await this.TagGroup.updateOne(
       { _id: groupId },
-      { $pull: { tags: { _id: id } } }
+      { $pull: { tags: { _id: id } } as any }
     );
     return await this.list(groupId);
   }
