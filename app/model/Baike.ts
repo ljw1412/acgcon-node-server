@@ -13,9 +13,11 @@ module.exports = (app: Application) => {
     // 描述
     desc: String,
     // 标签
-    tags: [Schema.Types.ObjectId],
+    tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
     // 基础信息
-    basic: [{ name: String, value: String }]
+    basic: [{ name: String, value: String }],
+    // 创建者id
+    creator: { type: Schema.Types.ObjectId, ref: 'User' }
   });
   return mongoose.model('Baike', BaikeSchema);
 };

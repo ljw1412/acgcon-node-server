@@ -3,6 +3,12 @@ import { Application } from 'egg';
 module.exports = (app: Application) => {
   const { mongoose } = app;
   const { Schema } = mongoose;
+  const TagSchema = new Schema({
+    name: String,
+    order: Number,
+    isAll: { type: Boolean, default: false }
+  });
+
   const TagGroupSchema = new Schema({
     // 名称
     name: String,
@@ -17,14 +23,9 @@ module.exports = (app: Application) => {
     // 是否允许多选
     multiple: { type: Boolean, default: false },
     // 标签列表
-    tags: [
-      {
-        name: String,
-        order: Number,
-        isAll: { type: Boolean, default: false }
-      }
-    ]
+    tags: [TagSchema]
   });
 
+  mongoose.model('Tag', TagSchema);
   return mongoose.model('TagGroup', TagGroupSchema, 'tag_groups');
 };
