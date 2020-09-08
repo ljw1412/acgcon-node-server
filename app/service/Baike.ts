@@ -10,9 +10,12 @@ export default class BaikeService extends Service {
   }
 
   public async show(id) {
-    console.log(id);
     return this.Baike.findById(id)
       .populate('tags')
       .populate('creator', ['avatar', 'nickname', 'role', 'username']);
+  }
+
+  public async update(payload) {
+    return await this.Baike.updateOne({ _id: payload._id }, payload);
   }
 }
