@@ -10,9 +10,7 @@ export default class BaikeTagController extends BaseController {
     };
     ctx.validate(createRule);
     const payload = ctx.request.body || {};
-    const { groupId } = payload;
-    delete payload.groupId;
-    ctx.body = await service.tag.create(groupId, payload);
+    ctx.body = await service.tag.create(payload);
   }
 
   public async destroy() {

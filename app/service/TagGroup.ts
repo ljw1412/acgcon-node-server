@@ -1,6 +1,10 @@
 import { Service } from 'egg';
 
 export default class TagGroupService extends Service {
+  get Tag() {
+    return this.ctx.model.Tag;
+  }
+
   get TagGroup() {
     return this.ctx.model.TagGroup;
   }
@@ -19,7 +23,6 @@ export default class TagGroupService extends Service {
       const nextOrder = result ? result.maxOrder + 1 : 1;
       group.order = nextOrder;
     }
-    group.tags = [{ name: '全部', order: 0, isAll: true }];
     return this.TagGroup.create(group);
   }
 
@@ -28,7 +31,9 @@ export default class TagGroupService extends Service {
    * @param payload 负荷
    */
   public async list(payload) {
-    const filters = await this.TagGroup.find(payload).sort({ order: 1 });
+    const filters = await this.TagGroup.find(payload)
+      .populate('tags')
+      .sort({ order: 1 });
     filters.forEach(filter => {
       filter.tags = filter.tags.sort((a, b) =>
         a.order - b.order > 0 ? 1 : -1

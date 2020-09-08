@@ -1,8 +1,21 @@
 import { Service } from 'egg';
 
 export default class TagService extends Service {
+  get Tag() {
+    return this.ctx.model.Tag;
+  }
+
   get TagGroup() {
     return this.ctx.model.TagGroup;
+  }
+
+  /**
+   * 根据标签组id查询标签列表
+   * @param groupId 标签组id
+   */
+  public async list(groupId: string) {
+    const list = await this.Tag.find({ group: groupId });
+    return list ? list.sort((a, b) => (a.order - b.order > 0 ? 1 : -1)) : [];
   }
 
   /**
@@ -12,30 +25,24 @@ export default class TagService extends Service {
    * @param tag.name 标签名称
    * @param tag.order 标签排序权重
    */
-  public async create(groupId, tag) {
-    const { ctx } = this;
-    const filter = await this.TagGroup.findById(groupId);
-    if (!filter) {
-      ctx.throw(404, 'groupId 无效');
-      return;
+  public async create(payload) {
+    const { app } = this;
+    const { groupId } = payload;
+    // 计算下一位排序
+    const tags = await this.list(groupId);
+    if (tags && tags.length) {
+      const nextOrder = Math.max(0, ...tags.map(tag => tag.order)) + 1;
+      payload.order = nextOrder;
     }
-    if (!tag.order) {
-      const nextOrder = Math.max(0, ...filter.tags.map((tag) => tag.order)) + 1;
-      tag.order = nextOrder;
-    }
-    await this.TagGroup.updateOne({ _id: groupId }, { $push: { tags: tag } });
+    // 创建标签关联
+    payload.group = new app.mongoose.Types.ObjectId(groupId);
+    const tag = await this.Tag.create(payload);
+    // 更新标签组的关联
+    await this.TagGroup.updateOne(
+      { _id: groupId },
+      { $push: { tags: tag._id } }
+    );
     return await this.list(groupId);
-  }
-
-  /**
-   * 根据标签组id查询标签列表
-   * @param groupId 标签组id
-   */
-  public async list(groupId: string) {
-    const filter = await this.TagGroup.findById(groupId);
-    return filter
-      ? filter.tags.sort((a, b) => (a.order - b.order > 0 ? 1 : -1))
-      : [];
   }
 
   /**
@@ -44,9 +51,10 @@ export default class TagService extends Service {
    * @param id  标签id
    */
   public async deleteTag(groupId: string, id: string) {
+    await this.Tag.deleteOne({ _id: id });
     await this.TagGroup.updateOne(
       { _id: groupId },
-      { $pull: { tags: { _id: id } } as any }
+      { $pull: { tags: id } as any }
     );
     return await this.list(groupId);
   }
@@ -59,13 +67,12 @@ export default class TagService extends Service {
    */
   public async updateOrder(payload: any) {
     const { groupId, list } = payload;
-    const filter = await this.TagGroup.findById(groupId);
-    const { tags } = filter;
+    const tags = await this.list(groupId);
     for (const tag of tags) {
       const index = list.indexOf(tag._id.toString());
       tag.order = ~index ? index : 999;
+      await tag.save();
     }
-    await filter.save();
     return await this.list(groupId);
   }
 }
