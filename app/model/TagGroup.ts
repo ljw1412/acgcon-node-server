@@ -12,7 +12,7 @@ module.exports = (app: Application) => {
     // acg类型
     acgType: String,
     // 百科类型
-    type: String,
+    subType: String,
     // 排序
     order: Number,
     // 是否允许多选

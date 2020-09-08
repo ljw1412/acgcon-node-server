@@ -7,7 +7,7 @@ const baseRule = {
     values: ['animation', 'comic', 'game'],
     required: true
   },
-  type: { type: 'string', required: true }
+  subType: { type: 'string', required: true }
 };
 
 export default class TagGroupController extends BaseController {
@@ -15,8 +15,8 @@ export default class TagGroupController extends BaseController {
     const { ctx, service } = this;
     ctx.validate(baseRule, ctx.query);
     const payload = ctx.query || {};
-    const { acgType, type } = payload;
-    const cacheKey = `${TAG_PREFIX}${acgType}_${type}`;
+    const { acgType, subType } = payload;
+    const cacheKey = `${TAG_PREFIX}${acgType}_${subType}`;
     const cache = await this.redis.get(cacheKey);
     if (cache) {
       ctx.res.setHeader('acg-data-from', 'cache');

@@ -17,7 +17,6 @@ export default class BaikeController extends BaseController {
   public async update() {
     const { ctx, service } = this;
     const payload = ctx.request.body || {};
-    console.log(payload);
     ctx.body = await service.baike.update(payload);
   }
 }
