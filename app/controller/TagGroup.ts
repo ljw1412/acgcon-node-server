@@ -79,6 +79,7 @@ export default class TagGroupController extends BaseController {
     ctx.body = await service.tagGroup.updateOrder(payload);
   }
 
+  // 重置缓存，依靠中间件TagCache实现。
   public async resetCache() {
     const { ctx } = this;
     ctx.validate(baseRule);
