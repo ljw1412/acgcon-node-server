@@ -1,14 +1,6 @@
 import BaseController from './base';
 import { TAG_PREFIX } from '../constant/cache';
-
-const baseRule = {
-  acgType: {
-    type: 'enum',
-    values: ['animation', 'comic', 'game'],
-    required: true
-  },
-  subType: { type: 'string', required: true }
-};
+import { baseRule } from '../constant/validate';
 
 export default class TagGroupController extends BaseController {
   public async index() {
